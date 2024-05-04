@@ -4,10 +4,6 @@ import de.littleprogrammer.guiapi.Api;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TeleportInterpolator {
 
@@ -43,7 +39,7 @@ public class TeleportInterpolator {
     }
 
     private void teleportWithDelay(Location location, int delayTicks) {
-        Bukkit.getScheduler().runTaskLater(Api.getInstance(), () -> {
+        Api.getScheduler().runTaskLater(Api.getInstance().getPlugin(), () -> {
             entity.teleport(location);
         }, delayTicks);
     }

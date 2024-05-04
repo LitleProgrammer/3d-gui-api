@@ -1,30 +1,32 @@
 package de.littleprogrammer.guiapi;
 
-import de.littleprogrammer.guiapi.commands.SpawnButtonCommand;
-import de.littleprogrammer.guiapi.components.Button;
 import de.littleprogrammer.guiapi.enums.ServerVersion;
-import de.littleprogrammer.guiapi.listeners.MoveListener;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
+import de.littleprogrammer.guiapi.listeners.GuiEvents;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class Api extends JavaPlugin {
+public final class Api {
 
+    private final JavaPlugin plugin;
     private static Api instance;
-    private static ServerVersion version;
-    private Map<UUID, Button> buttons = new HashMap<>();
+    private ServerVersion version;
+    private final Listener listener = new GuiEvents();
+    private Map<UUID, GUI> guis = new HashMap<>();
 
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
+    private Api(JavaPlugin plugin) {
+        this.plugin = plugin;
         instance = this;
+    }
 
-        String secIndicator = Bukkit.getBukkitVersion().split("\\.")[1];
-        String preTrdIndicator = Bukkit.getBukkitVersion().split("\\.")[2];
+    public void init() {
+        String secIndicator = plugin.getServer().getBukkitVersion().split("\\.")[1];
+        String preTrdIndicator = plugin.getServer().getBukkitVersion().split("\\.")[2];
         String trdIndicator = preTrdIndicator.split("-")[0];
 
         if (Integer.parseInt(secIndicator) == 20) {
@@ -41,16 +43,31 @@ public final class Api extends JavaPlugin {
             }
         }
 
-        getCommand("spawnBtn").setExecutor(new SpawnButtonCommand());
-        Bukkit.getPluginManager().registerEvents(new MoveListener(), this);
+        this.plugin.getServer().getPluginManager().registerEvents(this.listener, this.plugin);
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public JavaPlugin getPlugin() {return this.plugin;}
+    public static Api getInstance() {return instance;}
+    public ServerVersion getVersion() {
+        return version;
+    }
+    public static BukkitScheduler getScheduler() {
+        return Api.getInstance().getPlugin().getServer().getScheduler();
     }
 
-    public static Api getInstance() { return instance; }
-    public Map<UUID, Button> getButtons() { return buttons; }
-    public static ServerVersion getVersion() { return version; }
+    public GUI getGUI(UUID uuid) {
+        return guis.get(uuid);
+    }
+
+    public GUI getGUI(Player player) {
+        return guis.get(player.getUniqueId());
+    }
+
+    public Map<UUID, GUI> getGuis() {
+        return guis;
+    }
+
+    public Listener getListener() {
+        return listener;
+    }
 }
