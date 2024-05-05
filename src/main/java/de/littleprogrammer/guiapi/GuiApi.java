@@ -2,6 +2,7 @@ package de.littleprogrammer.guiapi;
 
 import de.littleprogrammer.guiapi.enums.ServerVersion;
 import de.littleprogrammer.guiapi.listeners.GuiEvents;
+import de.littleprogrammer.guiapi.listeners.MoveListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,15 +12,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class Api {
+public final class GuiApi {
 
     private final JavaPlugin plugin;
-    private static Api instance;
+    private static GuiApi instance;
     private ServerVersion version;
     private final Listener listener = new GuiEvents();
-    private Map<UUID, GUI> guis = new HashMap<>();
+    private Map<UUID, SimpleGui> guis = new HashMap<>();
 
-    private Api(JavaPlugin plugin) {
+    public GuiApi(JavaPlugin plugin) {
         this.plugin = plugin;
         instance = this;
     }
@@ -44,26 +45,27 @@ public final class Api {
         }
 
         this.plugin.getServer().getPluginManager().registerEvents(this.listener, this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(new MoveListener(), this.plugin);
     }
 
     public JavaPlugin getPlugin() {return this.plugin;}
-    public static Api getInstance() {return instance;}
+    public static GuiApi getInstance() {return instance;}
     public ServerVersion getVersion() {
         return version;
     }
     public static BukkitScheduler getScheduler() {
-        return Api.getInstance().getPlugin().getServer().getScheduler();
+        return GuiApi.getInstance().getPlugin().getServer().getScheduler();
     }
 
-    public GUI getGUI(UUID uuid) {
+    public SimpleGui getGUI(UUID uuid) {
         return guis.get(uuid);
     }
 
-    public GUI getGUI(Player player) {
+    public SimpleGui getGUI(Player player) {
         return guis.get(player.getUniqueId());
     }
 
-    public Map<UUID, GUI> getGuis() {
+    public Map<UUID, SimpleGui> getGuis() {
         return guis;
     }
 

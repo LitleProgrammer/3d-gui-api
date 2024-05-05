@@ -1,9 +1,8 @@
 package de.littleprogrammer.guiapi.components;
 
-import de.littleprogrammer.guiapi.Api;
-import de.littleprogrammer.guiapi.GUI;
+import de.littleprogrammer.guiapi.GuiApi;
+import de.littleprogrammer.guiapi.SimpleGui;
 import de.littleprogrammer.guiapi.utils.Calculations;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -21,25 +20,39 @@ public class Button implements Component {
     private Location location;
     private Player player;
     private Consumer<PlayerInteractEntityEvent> clickAction;
-    private GUI gui;
+    private int slot;
 
-    public Button(GUI gui, Player player, String texture, String localizedName) {
+    public Button(Player player, String texture, String localizedName, int slot) {
         this.player = player;
         this.texture = texture;
         this.localizedName = localizedName;
-        this.gui = gui;
-        uuid = UUID.randomUUID();
+        this.slot = slot;
 
-        spawn();
+        uuid = UUID.randomUUID();
     }
 
-    private void spawn() {
-        textDisplay = (TextDisplay) player.getWorld().spawnEntity(Calculations.calculateInventoryLoc(player.getLocation()), EntityType.TEXT_DISPLAY);
+    public void spawn() {
+        textDisplay = (TextDisplay) player.getWorld().spawnEntity(Calculations.calculateInventoryCenter(player.getLocation()), EntityType.TEXT_DISPLAY);
+        textDisplay.setCustomName(uuid.toString());
+        textDisplay.setCustomNameVisible(false);
         textDisplay.setText(texture);
         textDisplay.setGlowing(true);
         textDisplay.setBillboard(Display.Billboard.CENTER);
         textDisplay.setDisplayWidth(30);
         textDisplay.setDisplayHeight(30);
+        textDisplay.setVisibleByDefault(false);
+    }
+
+    public void show(Player player) {
+        player.showEntity(GuiApi.getInstance().getPlugin(), textDisplay);
+    }
+
+    public void hide(Player player) {
+        player.hideEntity(GuiApi.getInstance().getPlugin(), textDisplay);
+    }
+
+    public void remove() {
+       textDisplay.remove();
     }
 
     @Nonnull
@@ -59,5 +72,13 @@ public class Button implements Component {
 
     public Display getDisplay() {
         return textDisplay;
+    }
+
+    public UUID getUniqueId() {
+        return uuid;
+    }
+
+    public int getSlot() {
+        return slot;
     }
 }

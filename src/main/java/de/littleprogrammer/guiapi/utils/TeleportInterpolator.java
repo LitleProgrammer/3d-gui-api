@@ -1,7 +1,6 @@
 package de.littleprogrammer.guiapi.utils;
 
-import de.littleprogrammer.guiapi.Api;
-import org.bukkit.Bukkit;
+import de.littleprogrammer.guiapi.GuiApi;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
@@ -39,7 +38,7 @@ public class TeleportInterpolator {
     }
 
     private void teleportWithDelay(Location location, int delayTicks) {
-        Api.getScheduler().runTaskLater(Api.getInstance().getPlugin(), () -> {
+        GuiApi.getScheduler().runTaskLater(GuiApi.getInstance().getPlugin(), () -> {
             entity.teleport(location);
         }, delayTicks);
     }

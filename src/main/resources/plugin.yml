@@ -1,8 +1,0 @@
-name: 3dGuiApi
-version: '${version}'
-main: de.littleprogrammer.guiapi.Api
-api-version: '1.19'
-authors: [LittleProgrammer]
-description: An API to make 3D Gui's in minecraft
-commands:
-  spawnBtn:
