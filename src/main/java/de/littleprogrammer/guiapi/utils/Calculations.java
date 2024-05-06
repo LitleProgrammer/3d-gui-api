@@ -4,6 +4,10 @@ import de.littleprogrammer.guiapi.SimpleGui;
 import de.littleprogrammer.guiapi.components.Button;
 import de.littleprogrammer.guiapi.components.Component;
 import org.bukkit.Location;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class Calculations {
 
@@ -27,7 +31,7 @@ public class Calculations {
             //Is button in row
             switch (buttonAmount) {
                 case 1:
-                    return centerLoc.clone().subtract(0, 0.5, 0);
+                    return centerLoc.clone().subtract(0, 0, 0);
                 case 2:
                     if (button.getSlot() == 1) {
                         return locations[0];
@@ -39,7 +43,7 @@ public class Calculations {
                     if (button.getSlot() == 1) {
                         return locations[0];
                     } else if (button.getSlot() == 2) {
-                        return centerLoc.clone().subtract(0, 0.5, 0);
+                        return centerLoc.clone().subtract(0, 0, 0);
                     } else if (button.getSlot() == 3) {
                         return locations[1];
                     }
@@ -52,28 +56,36 @@ public class Calculations {
         return null;
     }
 
-    private static Location[] calculateTrianglePoints(Location midLocation, Location centerLocation) {
-        // Calculate distance between mid and center locations
-        double distance = midLocation.distance(centerLocation);
+    /**
+     * @param playerLocation the location of the player (the point in the middle)
+     * @param centerLocation the location on the circle to get the correct height
+     */
+    private static Location[] calculateTrianglePoints(Location playerLocation, Location centerLocation) {
+        double radius = playerLocation.distance(centerLocation);
 
-        // Calculate angle between mid and center locations
-        double angle = Math.atan2(centerLocation.getZ() - midLocation.getZ(), centerLocation.getX() - midLocation.getX());
+        Vector vector1 = playerLocation.getDirection().setY(0).normalize().multiply(radius).rotateAroundY(Math.toRadians(30));
+        Vector vector2 = playerLocation.getDirection().setY(0).normalize().multiply(radius).rotateAroundY(Math.toRadians(-30));
 
-        // Calculate offset angles for left and right points
-        double leftOffsetAngle = angle + Math.PI / 2; // 90 degrees counterclockwise
-        double rightOffsetAngle = angle - Math.PI / 2; // 90 degrees clockwise
+        Location loc1 = playerLocation.clone().add(vector1);
+        loc1.setY(centerLocation.getY());
 
-        // Calculate left and right points using offset angles and distance
-        Location leftPoint = calculatePointOnCircle(centerLocation, leftOffsetAngle, 4);
-        Location rightPoint = calculatePointOnCircle(centerLocation, rightOffsetAngle, 4);
+        Location loc2 = playerLocation.clone().add(vector2);
+        loc2.setY(centerLocation.getY());
 
-        return new Location[]{leftPoint, rightPoint};
+        return new Location[]{loc1, loc2};
     }
 
-    private static Location calculatePointOnCircle(Location centerLocation, double angle, double radius) {
-        double x = centerLocation.getX() + radius * Math.cos(angle);
-        double z = centerLocation.getZ() + radius * Math.sin(angle);
-        return new Location(centerLocation.getWorld(), x, centerLocation.getY(), z, centerLocation.getYaw(), centerLocation.getPitch());
-    }
+    public static boolean playerLookingAtEntity(Player player, Entity entity) {
+        Vector playerDirection = player.getLocation().getDirection().normalize();
 
+        Location entityLocation = entity.getLocation();
+        Location playerEyeLocation = player.getEyeLocation();
+
+        Vector playerToEntity = entityLocation.toVector().subtract(playerEyeLocation.toVector()).normalize();
+        double dotProduct = playerDirection.dot(playerToEntity);
+
+        //System.out.println("Checking entity" + entity + " " + entity.getCustomName() + " dot: " + dotProduct);
+
+        return dotProduct > 0.97;
+    }
 }

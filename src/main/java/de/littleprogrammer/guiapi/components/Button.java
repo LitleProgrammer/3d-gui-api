@@ -6,6 +6,8 @@ import de.littleprogrammer.guiapi.utils.Calculations;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.util.Transformation;
+import org.joml.Vector3f;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -41,6 +43,10 @@ public class Button implements Component {
         textDisplay.setDisplayWidth(30);
         textDisplay.setDisplayHeight(30);
         textDisplay.setVisibleByDefault(false);
+        textDisplay.setDefaultBackground(false);
+        Transformation transformation = textDisplay.getTransformation();
+        transformation.getScale().set(new Vector3f(2, 2, 2));
+        textDisplay.setTransformation(transformation);
     }
 
     public void show(Player player) {
