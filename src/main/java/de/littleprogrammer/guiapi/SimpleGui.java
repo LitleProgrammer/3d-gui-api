@@ -9,9 +9,7 @@ import de.littleprogrammer.guiapi.utils.TeleportInterpolator;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class SimpleGui {
 
@@ -69,6 +67,7 @@ public class SimpleGui {
         }
         this.player = player;
         GuiApi.getInstance().getGuis().put(player.getUniqueId(), this);
+        centerLocation = new Location(player.getWorld(), 0, 0, 0);
 
         for (Component component : components.values()) {
             component.spawn();
@@ -86,6 +85,14 @@ public class SimpleGui {
         return centerLocation;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Component> getComponents() {
+        return new ArrayList<>(components.values());
+    }
+
     public boolean isOpen() {
         return open;
     }
@@ -94,6 +101,7 @@ public class SimpleGui {
         if (buttons.size() < 3) {
             components.put(button.getUniqueId(), button);
             buttons.put(button.getUniqueId(), button);
+            button.setGui(this);
         }
         return this;
     }
@@ -104,9 +112,5 @@ public class SimpleGui {
         }
         this.content = content;
         return this;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 }

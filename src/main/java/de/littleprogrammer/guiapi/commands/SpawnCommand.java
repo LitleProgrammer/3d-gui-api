@@ -11,15 +11,15 @@ import org.bukkit.entity.Player;
 public class SpawnCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        Button button = new Button((Player) commandSender, "\uE001", "LcoalizedName", 1).onClick(event -> {
+        Button button = new Button((Player) commandSender, "\uE001", "\uE002", "LcoalizedName", 1).onClick(event -> {
             event.getPlayer().sendMessage("You clicked a button1");
         });
 
-        Button button2 = new Button((Player) commandSender, "\uE001", "LcoalizedName", 2).onClick(event -> {
+        Button button2 = new Button((Player) commandSender, "\uE001", "\uE002", "LcoalizedName", 2).onClick(event -> {
             event.getPlayer().sendMessage("You clicked a button2");
         });
 
-        Button button3 = new Button((Player) commandSender, "\uE001", "LcoalizedName", 3).onClick(event -> {
+        Button button3 = new Button((Player) commandSender, "\uE001", "\uE002", "LcoalizedName", 3).onClick(event -> {
             event.getPlayer().sendMessage("You clicked a button3");
         });
 

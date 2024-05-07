@@ -4,7 +4,6 @@ import de.littleprogrammer.guiapi.SimpleGui;
 import de.littleprogrammer.guiapi.components.Button;
 import de.littleprogrammer.guiapi.components.Component;
 import org.bukkit.Location;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -87,5 +86,15 @@ public class Calculations {
         //System.out.println("Checking entity" + entity + " " + entity.getCustomName() + " dot: " + dotProduct);
 
         return dotProduct > 0.97;
+    }
+
+    public static boolean isInRange(Location playerEyeLocation, Location centerLocation, double rangeInDegrees) {
+        Vector playerEyeVector = playerEyeLocation.getDirection().setY(0).normalize();
+        Vector playerToCenter = centerLocation.toVector().subtract(playerEyeLocation.toVector()).setY(0).normalize();
+
+        double dotProduct = playerToCenter.dot(playerEyeVector);
+        double angle = Math.toDegrees(Math.acos(dotProduct));
+
+        return angle <= rangeInDegrees;
     }
 }

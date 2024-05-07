@@ -2,6 +2,8 @@ package de.littleprogrammer.guiapi.components;
 
 import de.littleprogrammer.guiapi.GuiApi;
 import de.littleprogrammer.guiapi.SimpleGui;
+import de.littleprogrammer.guiapi.customeEvents.HoverButtonEvent;
+import de.littleprogrammer.guiapi.customeEvents.UnHoverButtonEvent;
 import de.littleprogrammer.guiapi.utils.Calculations;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -16,17 +18,22 @@ import java.util.function.Consumer;
 public class Button implements Component {
 
     private String texture;
+    private String hoverTexture;
     private String localizedName;
     private UUID uuid;
     private TextDisplay textDisplay;
     private Location location;
     private Player player;
     private Consumer<PlayerInteractEntityEvent> clickAction;
+    private Consumer<HoverButtonEvent> hoverAction;
+    private Consumer<UnHoverButtonEvent> unHoverAction;
     private int slot;
+    private SimpleGui simpleGui;
 
-    public Button(Player player, String texture, String localizedName, int slot) {
+    public Button(Player player, String texture, String hoverTexture, String localizedName, int slot) {
         this.player = player;
         this.texture = texture;
+        this.hoverTexture = hoverTexture;
         this.localizedName = localizedName;
         this.slot = slot;
 
@@ -63,7 +70,11 @@ public class Button implements Component {
 
     @Nonnull
     public Consumer<PlayerInteractEntityEvent> getClickAction() {
-        return clickAction;
+        if (clickAction != null) {
+            return clickAction;
+        } else {
+            return (event -> {});
+        }
     }
 
     @Nonnull
@@ -72,11 +83,37 @@ public class Button implements Component {
         return this;
     }
 
+    public Consumer<HoverButtonEvent> getHoverAction() {
+        if (hoverAction != null) {
+            return hoverAction;
+        } else {
+            return (event -> {});
+        }
+    }
+
+    public Button onHover(Consumer<HoverButtonEvent> hoverAction) {
+        this.hoverAction = hoverAction;
+        return this;
+    }
+
+    public Consumer<UnHoverButtonEvent> getUnHoverAction() {
+        if (unHoverAction != null) {
+            return unHoverAction;
+        } else {
+            return (event -> {});
+        }
+    }
+
+    public Button onUnHover(Consumer<UnHoverButtonEvent> unHoverAction) {
+        this.unHoverAction = unHoverAction;
+        return this;
+    }
+
     public Entity getEntity() {
         return textDisplay;
     }
 
-    public Display getDisplay() {
+    public TextDisplay getDisplay() {
         return textDisplay;
     }
 
@@ -84,7 +121,23 @@ public class Button implements Component {
         return uuid;
     }
 
+    public SimpleGui getGui() {
+        return simpleGui;
+    }
+
+    public String getText() {
+        return texture;
+    }
+
+    public String getHoverText() {
+        return hoverTexture;
+    }
+
     public int getSlot() {
         return slot;
+    }
+
+    public void setGui(SimpleGui gui) {
+        simpleGui = gui;
     }
 }
