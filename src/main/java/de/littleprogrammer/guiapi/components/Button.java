@@ -19,29 +19,26 @@ public class Button implements Component {
 
     private String texture;
     private String hoverTexture;
-    private String localizedName;
     private UUID uuid;
     private TextDisplay textDisplay;
     private Location location;
-    private Player player;
     private Consumer<PlayerInteractEntityEvent> clickAction;
     private Consumer<HoverButtonEvent> hoverAction;
     private Consumer<UnHoverButtonEvent> unHoverAction;
     private int slot;
+    private int size = 2;
     private SimpleGui simpleGui;
 
-    public Button(Player player, String texture, String hoverTexture, String localizedName, int slot) {
-        this.player = player;
+    public Button(String texture, String hoverTexture, int slot) {
         this.texture = texture;
         this.hoverTexture = hoverTexture;
-        this.localizedName = localizedName;
         this.slot = slot;
 
         uuid = UUID.randomUUID();
     }
 
     public void spawn() {
-        textDisplay = (TextDisplay) player.getWorld().spawnEntity(Calculations.calculateInventoryCenter(player.getLocation()), EntityType.TEXT_DISPLAY);
+        textDisplay = (TextDisplay) simpleGui.getCenterLocation().getWorld().spawnEntity(Calculations.calculateComponentLocation(simpleGui, this, simpleGui.getButtonAmount()), EntityType.TEXT_DISPLAY);
         textDisplay.setCustomName(uuid.toString());
         textDisplay.setCustomNameVisible(false);
         textDisplay.setText(texture);
@@ -52,7 +49,7 @@ public class Button implements Component {
         textDisplay.setVisibleByDefault(false);
         textDisplay.setDefaultBackground(false);
         Transformation transformation = textDisplay.getTransformation();
-        transformation.getScale().set(new Vector3f(2, 2, 2));
+        transformation.getScale().set(new Vector3f(size, size, size));
         textDisplay.setTransformation(transformation);
     }
 
@@ -139,5 +136,9 @@ public class Button implements Component {
 
     public void setGui(SimpleGui gui) {
         simpleGui = gui;
+    }
+    public Button setSize(int size) {
+        this.size = size;
+        return this;
     }
 }

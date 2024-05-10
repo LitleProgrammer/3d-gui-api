@@ -93,6 +93,10 @@ public class SimpleGui {
         return new ArrayList<>(components.values());
     }
 
+    public int getButtonAmount() {
+        return buttons.size();
+    }
+
     public boolean isOpen() {
         return open;
     }
@@ -107,10 +111,13 @@ public class SimpleGui {
     }
 
     public SimpleGui addContent(Text content) {
-        if (content != null) {
-            content.remove();
+        if (this.content != null) {
+            components.remove(this.content.getUniqueId());
+            this.content.remove();
         }
         this.content = content;
+        components.put(content.getUniqueId(), content);
+        content.setGui(this);
         return this;
     }
 }
