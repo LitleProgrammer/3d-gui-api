@@ -17,11 +17,13 @@ public class SimpleGui {
     private final UUID uuid;
     private final Map<UUID, Component> components;
     private final Map<UUID, Button> buttons;
+    private final String title;
     private Component content;
     private Location centerLocation;
     private boolean open;
 
-    public SimpleGui(String title, int gridWidth, int gridHeight) {
+    public SimpleGui(String title) {
+        this.title = title;
         this.uuid = UUID.randomUUID();
         this.components = new HashMap<>();
         this.buttons = new HashMap<>();
