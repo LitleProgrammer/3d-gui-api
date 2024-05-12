@@ -32,10 +32,6 @@ java {
     }
 }
 
-jar {
-    destinationDirectory.set(file("/Users/linusglimm/Desktop/mineopoly stuff/servers/spigotTest/plugins"))
-}
-
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 
