@@ -3,7 +3,6 @@ plugins {
     id 'maven-publish'
 }
 
-apply plugin: 'maven-publish'
 group = 'de.littleprogrammer'
 version = '0.0.1'
 
