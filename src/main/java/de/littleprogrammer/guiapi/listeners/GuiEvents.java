@@ -18,6 +18,28 @@ public class GuiEvents implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        System.out.println(event.getAction());
+        final SimpleGui simpleGui = GuiApi.getInstance().getGUI(event.getPlayer());
+
+        if (simpleGui == null) return;
+
+        Entity awaitenEntity = null;
+        for (Entity entity : event.getPlayer().getNearbyEntities(7, 7, 7)) {
+            if (entity instanceof Display && entity.getCustomName() != null) {
+                if (Calculations.playerLookingAtEntity(event.getPlayer(), entity)) {
+                    awaitenEntity = entity;
+                    break;
+                }
+            }
+        }
+
+        if (awaitenEntity == null) { return; }
+
+        UUID uuid = UUID.fromString(awaitenEntity.getCustomName());
+        Component component = simpleGui.getComponent(uuid);
+        if (!(component instanceof Button)) return;
+
+        Button button = (Button) component;
+        //System.out.println("Click on button: " + button.getUniqueId());
+        button.getClickAction().accept(new PlayerInteractEntityEvent(event.getPlayer(), button.getEntity()));
     }
 }

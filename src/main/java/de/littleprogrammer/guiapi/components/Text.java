@@ -12,7 +12,7 @@ public class Text implements Component {
 
     private String text;
     private UUID uuid;
-    private int size = 2;
+    private float size = 2;
     private TextDisplay textDisplay;
     private SimpleGui simpleGui;
 
@@ -57,7 +57,7 @@ public class Text implements Component {
         return simpleGui;
     }
 
-    public int getSize() {
+    public float getSize() {
         return size;
     }
 
@@ -65,7 +65,7 @@ public class Text implements Component {
         this.simpleGui = simpleGui;
     }
 
-    public Text setSize(int size) {
+    public Text setSize(float size) {
         this.size = size;
         return this;
     }

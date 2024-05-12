@@ -30,7 +30,7 @@ public class MoveListener implements Listener {
             }
 
             Entity hoveredEntity = null;
-            for (Entity entity : event.getPlayer().getNearbyEntities(5, 5, 5)) {
+            for (Entity entity : event.getPlayer().getNearbyEntities(8, 8, 8)) {
                 if (entity instanceof Display && entity.getCustomName() != null) {
                     if (Calculations.isInRange(event.getPlayer().getEyeLocation(), entity.getLocation(), 7)) {
                         hoveredEntity = entity;
@@ -43,12 +43,16 @@ public class MoveListener implements Listener {
                 if (simpleGui.getComponent(UUID.fromString(hoveredEntity.getCustomName())) instanceof Button) {
                     Button button = (Button) simpleGui.getComponent(UUID.fromString(hoveredEntity.getCustomName()));
                     button.getHoverAction().accept(new HoverButtonEvent(simpleGui, event.getPlayer(), button, button.getHoverText(), button.getText()));
+                    button.setHover(true);
                 }
             } else {
                 for (Component component : simpleGui.getComponents()) {
                     if (component instanceof Button) {
                         Button button = (Button) component;
-                        button.getUnHoverAction().accept(new UnHoverButtonEvent(simpleGui, event.getPlayer(), button, button.getHoverText(), button.getText()));
+                        if (button.isHover()) {
+                            button.getUnHoverAction().accept(new UnHoverButtonEvent(simpleGui, event.getPlayer(), button, button.getHoverText(), button.getText()));
+                            button.setHover(false);
+                        }
                     }
                 }
             }

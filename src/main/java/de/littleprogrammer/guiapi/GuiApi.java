@@ -1,6 +1,5 @@
 package de.littleprogrammer.guiapi;
 
-import de.littleprogrammer.guiapi.commands.SpawnCommand;
 import de.littleprogrammer.guiapi.enums.ServerVersion;
 import de.littleprogrammer.guiapi.listeners.GuiEvents;
 import de.littleprogrammer.guiapi.listeners.MoveListener;
@@ -14,15 +13,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class GuiApi extends JavaPlugin {
+public final class GuiApi {
 
     private JavaPlugin plugin;
     private static GuiApi instance;
     private ServerVersion version;
     private final Listener listener = new GuiEvents();
+    private final Listener moveListener = new MoveListener();
     private Map<UUID, SimpleGui> guis = new HashMap<>();
 
-    @Override
+    public GuiApi(JavaPlugin plugin) {
+        this.plugin = plugin;
+        instance = this;
+    }
+
+    /*@Override
     public void onEnable() {
         // Plugin startup logic
         this.plugin = this;
@@ -34,9 +39,10 @@ public final class GuiApi extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-    }
+    }*/
 
     public void init() {
+        //This method checks the server version, to determine weather it should use the new 1.20.2 teleport interpolation or my own teleport interpolation
         String secIndicator = plugin.getServer().getBukkitVersion().split("\\.")[1];
         String preTrdIndicator = plugin.getServer().getBukkitVersion().split("\\.")[2];
         String trdIndicator = preTrdIndicator.split("-")[0];
@@ -55,10 +61,9 @@ public final class GuiApi extends JavaPlugin {
             }
         }
 
-        Bukkit.getPluginManager().registerEvents(this.listener, this.plugin);
-        Bukkit.getPluginManager().registerEvents(new MoveListener(), this.plugin);
-
-        getCommand("spawnGui").setExecutor(new SpawnCommand());
+        //register the two listeners needed
+        getPlugin().getServer().getPluginManager().registerEvents(this.listener, this.plugin);
+        getPlugin().getServer().getPluginManager().registerEvents(this.moveListener, this.plugin);
     }
 
     public JavaPlugin getPlugin() {return this.plugin;}

@@ -26,8 +26,9 @@ public class Button implements Component {
     private Consumer<HoverButtonEvent> hoverAction;
     private Consumer<UnHoverButtonEvent> unHoverAction;
     private int slot;
-    private int size = 2;
+    private float size = 2;
     private SimpleGui simpleGui;
+    private boolean hover = false;
 
     public Button(String texture, String hoverTexture, int slot) {
         this.texture = texture;
@@ -137,8 +138,17 @@ public class Button implements Component {
     public void setGui(SimpleGui gui) {
         simpleGui = gui;
     }
-    public Button setSize(int size) {
+
+    public Button setSize(float size) {
         this.size = size;
         return this;
+    }
+
+    public void setHover(boolean hover) {
+        this.hover = hover;
+    }
+
+    public boolean isHover() {
+        return hover;
     }
 }

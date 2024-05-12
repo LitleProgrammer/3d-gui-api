@@ -50,7 +50,7 @@ public class Calculations {
             }
         } else {
             //Is content
-            return centerLoc.clone().add(0, 0.5, 0);
+            return centerLoc.clone().add(0, 1.5, 0);
         }
         return null;
     }
