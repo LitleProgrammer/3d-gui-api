@@ -65,8 +65,8 @@ public final class GuiApi {
         //register the two listeners needed
         getPlugin().getServer().getPluginManager().registerEvents(this.listener, this.plugin);
         getPlugin().getServer().getPluginManager().registerEvents(this.moveListener, this.plugin);
-        
-        this.getPlugin().getCommand("spawnGui").setExecutor(new SpawnCommand());
+
+        //this.getPlugin().getCommand("spawnGui").setExecutor(new SpawnCommand());
     }
 
     public JavaPlugin getPlugin() {return this.plugin;}
