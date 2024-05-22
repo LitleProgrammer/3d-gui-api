@@ -122,4 +122,8 @@ public class SimpleGui {
         content.setGui(this);
         return this;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }
