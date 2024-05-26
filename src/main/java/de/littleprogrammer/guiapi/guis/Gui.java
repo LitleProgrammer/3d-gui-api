@@ -1,5 +1,6 @@
 package de.littleprogrammer.guiapi.guis;
 
+import de.littleprogrammer.guiapi.components.Button;
 import de.littleprogrammer.guiapi.components.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ public abstract class Gui {
     public Location centerLocation;
     public boolean open;
     public Map<UUID, Component> components;
+    public Map<UUID, Button> buttons;
     public int spacing;
 
     public Gui(UUID uuid, boolean open) {
@@ -19,6 +21,7 @@ public abstract class Gui {
         this.open = open;
 
         this.components = new HashMap<>();
+        this.buttons = new HashMap<>();
     }
 
     public abstract void open(Player player);
@@ -67,5 +70,9 @@ public abstract class Gui {
 
     public int getSpacing() {
         return spacing;
+    }
+
+    public int getButtonAmount() {
+        return buttons.size();
     }
 }

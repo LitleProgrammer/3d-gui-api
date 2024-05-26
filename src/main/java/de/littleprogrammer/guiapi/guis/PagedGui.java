@@ -15,10 +15,11 @@ import java.util.*;
 public class PagedGui extends Gui {
 
     private int page;
-    private Map<UUID, Button> buttons;
     private String title;
     private List<String> contents;
     private List<Text> texts;
+    private Button leftButton;
+    private Button rightButton;
 
     public PagedGui(String title, int page) {
         super(UUID.randomUUID(), false);
@@ -26,7 +27,6 @@ public class PagedGui extends Gui {
         this.page = page;
         this.contents = new ArrayList<>();
         this.texts = new ArrayList<>();
-        this.buttons = new HashMap<>();
 
         setSpacing(60);
     }
@@ -50,6 +50,31 @@ public class PagedGui extends Gui {
                 components.put(text.getUniqueId(), text);
             }
         }
+
+        leftButton = new Button("<", "<<", 1).onClick(event -> {
+            if (GuiApi.getInstance().getGuis().get(player.getUniqueId()) instanceof PagedGui) {
+                PagedGui gui = (PagedGui) GuiApi.getInstance().getGuis().get(player.getUniqueId());
+                if (gui.getPage() > 0) {
+                    gui.changePage(gui.getPage() - 1);
+                }
+            }
+        });
+        leftButton.setGui(this);
+        buttons.put(leftButton.getUniqueId(), leftButton);
+
+        rightButton = new Button(">", ">>", 2).onClick(event -> {
+            if (GuiApi.getInstance().getGuis().get(player.getUniqueId()) instanceof PagedGui) {
+                PagedGui gui = (PagedGui) GuiApi.getInstance().getGuis().get(player.getUniqueId());
+                if (gui.getPage() < gui.getTexts().size() - 3) {
+                    gui.changePage(gui.getPage() + 1);
+                }
+            }
+        });
+        rightButton.setGui(this);
+        buttons.put(rightButton.getUniqueId(), rightButton);
+
+        components.put(leftButton.getUniqueId(), leftButton);
+        components.put(rightButton.getUniqueId(), rightButton);
 
         for (Component component : components.values()) {
             component.spawn();
@@ -82,12 +107,26 @@ public class PagedGui extends Gui {
                     TeleportInterpolator teleportInterpolator = new TeleportInterpolator(text.getEntity(), newComponentLocation, 5, 1);
                     teleportInterpolator.startInterpolation();
                 }
+
+                for (Button button : buttons.values()) {
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, spacing);
+
+                    TeleportInterpolator teleportInterpolator = new TeleportInterpolator(button.getEntity(), newComponentLocation, 5, 1);
+                    teleportInterpolator.startInterpolation();
+                }
             } else {
                 for (Text text : texts) {
                     Location newComponentLocation = Calculations.calculateComponentLocation(this, text, 3, spacing);
 
                     text.getDisplay().setTeleportDuration(5);
                     text.getDisplay().teleport(newComponentLocation);
+                }
+
+                for (Button button : buttons.values()) {
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, spacing);
+
+                    button.getDisplay().setTeleportDuration(5);
+                    button.getDisplay().teleport(newComponentLocation);
                 }
             }
         }
@@ -113,5 +152,13 @@ public class PagedGui extends Gui {
 
     public String getTitle() {
         return title;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public List<Text> getTexts() {
+        return texts;
     }
 }

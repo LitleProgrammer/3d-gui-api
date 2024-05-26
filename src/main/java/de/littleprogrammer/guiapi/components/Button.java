@@ -1,6 +1,7 @@
 package de.littleprogrammer.guiapi.components;
 
 import de.littleprogrammer.guiapi.GuiApi;
+import de.littleprogrammer.guiapi.guis.Gui;
 import de.littleprogrammer.guiapi.guis.SimpleGui;
 import de.littleprogrammer.guiapi.customeEvents.HoverButtonEvent;
 import de.littleprogrammer.guiapi.customeEvents.UnHoverButtonEvent;
@@ -27,7 +28,7 @@ public class Button implements Component {
     private Consumer<UnHoverButtonEvent> unHoverAction;
     private int slot;
     private float size = 2;
-    private SimpleGui simpleGui;
+    private Gui gui;
     private boolean hover = false;
 
     public Button(String texture, String hoverTexture, int slot) {
@@ -39,7 +40,7 @@ public class Button implements Component {
     }
 
     public void spawn() {
-        textDisplay = (TextDisplay) simpleGui.getCenterLocation().getWorld().spawnEntity(Calculations.calculateComponentLocation(simpleGui, this, simpleGui.getButtonAmount(), 30), EntityType.TEXT_DISPLAY);
+        textDisplay = (TextDisplay) gui.getCenterLocation().getWorld().spawnEntity(Calculations.calculateComponentLocation(gui, this, gui.getButtonAmount(), 30), EntityType.TEXT_DISPLAY);
         textDisplay.setCustomName(uuid.toString());
         textDisplay.setCustomNameVisible(false);
         textDisplay.setText(texture);
@@ -119,8 +120,8 @@ public class Button implements Component {
         return uuid;
     }
 
-    public SimpleGui getGui() {
-        return simpleGui;
+    public Gui getGui() {
+        return gui;
     }
 
     public String getText() {
@@ -135,8 +136,8 @@ public class Button implements Component {
         return slot;
     }
 
-    public void setGui(SimpleGui gui) {
-        simpleGui = gui;
+    public void setGui(Gui gui) {
+        this.gui = gui;
     }
 
     public Button setSize(float size) {

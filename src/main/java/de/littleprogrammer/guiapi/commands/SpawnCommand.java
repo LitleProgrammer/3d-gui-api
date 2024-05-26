@@ -49,6 +49,15 @@ public class SpawnCommand implements CommandExecutor {
         stringList.add("String 1");
         stringList.add("String 2");
         stringList.add("String 3");
+        stringList.add("String 4");
+        stringList.add("String 5");
+        stringList.add("String 6");
+        stringList.add("String 7");
+        stringList.add("String 8");
+        stringList.add("String 9");
+        stringList.add("String 10");
+        stringList.add("String 11");
+        stringList.add("String 12");
 
         PagedGui pagedGui = new PagedGui("Title", 0);
         pagedGui.addContent(stringList);

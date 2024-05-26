@@ -14,7 +14,6 @@ import java.util.*;
 
 public class SimpleGui extends Gui {
 
-    private final Map<UUID, Button> buttons;
     private final String title;
     private Component content;
 
@@ -23,7 +22,6 @@ public class SimpleGui extends Gui {
 
         this.title = title;
         this.components = new HashMap<>();
-        this.buttons = new HashMap<>();
         setSpacing(30);
     }
 
@@ -79,10 +77,6 @@ public class SimpleGui extends Gui {
         open = true;
     }
 
-
-    public int getButtonAmount() {
-        return buttons.size();
-    }
 
     public SimpleGui addButton(Button button) {
         if (buttons.size() < 3) {
