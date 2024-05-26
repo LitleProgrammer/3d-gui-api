@@ -1,7 +1,7 @@
 package de.littleprogrammer.guiapi.components;
 
 import de.littleprogrammer.guiapi.GuiApi;
-import de.littleprogrammer.guiapi.SimpleGui;
+import de.littleprogrammer.guiapi.guis.SimpleGui;
 import de.littleprogrammer.guiapi.customeEvents.HoverButtonEvent;
 import de.littleprogrammer.guiapi.customeEvents.UnHoverButtonEvent;
 import de.littleprogrammer.guiapi.utils.Calculations;
@@ -39,7 +39,7 @@ public class Button implements Component {
     }
 
     public void spawn() {
-        textDisplay = (TextDisplay) simpleGui.getCenterLocation().getWorld().spawnEntity(Calculations.calculateComponentLocation(simpleGui, this, simpleGui.getButtonAmount()), EntityType.TEXT_DISPLAY);
+        textDisplay = (TextDisplay) simpleGui.getCenterLocation().getWorld().spawnEntity(Calculations.calculateComponentLocation(simpleGui, this, simpleGui.getButtonAmount(), 30), EntityType.TEXT_DISPLAY);
         textDisplay.setCustomName(uuid.toString());
         textDisplay.setCustomNameVisible(false);
         textDisplay.setText(texture);

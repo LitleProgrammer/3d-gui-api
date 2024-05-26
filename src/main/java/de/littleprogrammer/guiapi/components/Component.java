@@ -1,6 +1,5 @@
 package de.littleprogrammer.guiapi.components;
 
-import de.littleprogrammer.guiapi.SimpleGui;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

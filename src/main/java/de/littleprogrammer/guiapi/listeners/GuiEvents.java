@@ -1,7 +1,7 @@
 package de.littleprogrammer.guiapi.listeners;
 
 import de.littleprogrammer.guiapi.GuiApi;
-import de.littleprogrammer.guiapi.SimpleGui;
+import de.littleprogrammer.guiapi.guis.Gui;
 import de.littleprogrammer.guiapi.components.Button;
 import de.littleprogrammer.guiapi.components.Component;
 import de.littleprogrammer.guiapi.utils.Calculations;
@@ -18,9 +18,9 @@ public class GuiEvents implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        final SimpleGui simpleGui = GuiApi.getInstance().getGUI(event.getPlayer());
+        final Gui gui = GuiApi.getInstance().getGUI(event.getPlayer());
 
-        if (simpleGui == null) return;
+        if (gui == null) return;
 
         Entity awaitenEntity = null;
         for (Entity entity : event.getPlayer().getNearbyEntities(7, 7, 7)) {
@@ -35,7 +35,7 @@ public class GuiEvents implements Listener {
         if (awaitenEntity == null) { return; }
 
         UUID uuid = UUID.fromString(awaitenEntity.getCustomName());
-        Component component = simpleGui.getComponent(uuid);
+        Component component = gui.getComponent(uuid);
         if (!(component instanceof Button)) return;
 
         Button button = (Button) component;

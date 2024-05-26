@@ -1,7 +1,8 @@
 package de.littleprogrammer.guiapi.components;
 
 import de.littleprogrammer.guiapi.GuiApi;
-import de.littleprogrammer.guiapi.SimpleGui;
+import de.littleprogrammer.guiapi.guis.Gui;
+import de.littleprogrammer.guiapi.guis.SimpleGui;
 import org.bukkit.entity.*;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
@@ -14,16 +15,23 @@ public class Text implements Component {
     private UUID uuid;
     private float size = 2;
     private TextDisplay textDisplay;
-    private SimpleGui simpleGui;
+    private Gui gui;
+    private int slot;
 
     public Text(String text) {
         this.text = text;
         uuid = UUID.randomUUID();
     }
 
+    public Text(String text, int slot) {
+        this.text = text;
+        this.slot = slot < 0 || slot > 3 ? 1 : slot;
+        uuid = UUID.randomUUID();
+    }
+
     @Override
     public void spawn() {
-        textDisplay = (TextDisplay) simpleGui.getCenterLocation().getWorld().spawnEntity(simpleGui.getCenterLocation(), EntityType.TEXT_DISPLAY);
+        textDisplay = (TextDisplay) gui.getCenterLocation().getWorld().spawnEntity(gui.getCenterLocation(), EntityType.TEXT_DISPLAY);
         textDisplay.setCustomName(uuid.toString());
         textDisplay.setCustomNameVisible(false);
         textDisplay.setText(text);
@@ -53,16 +61,16 @@ public class Text implements Component {
         return uuid;
     }
 
-    public SimpleGui getGui() {
-        return simpleGui;
+    public Gui getGui() {
+        return gui;
     }
 
     public float getSize() {
         return size;
     }
 
-    public void setGui(SimpleGui simpleGui) {
-        this.simpleGui = simpleGui;
+    public void setGui(Gui gui) {
+        this.gui = gui;
     }
 
     public Text setSize(float size) {
@@ -83,5 +91,13 @@ public class Text implements Component {
     @Override
     public void remove() {
         textDisplay.remove();
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public void setSlot(int slot) {
+        this.slot = slot;
     }
 }
