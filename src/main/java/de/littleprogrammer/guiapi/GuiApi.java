@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class GuiApi extends JavaPlugin {
+public final class GuiApi /*extends JavaPlugin*/ {
 
     private JavaPlugin plugin;
     private static GuiApi instance;
@@ -24,12 +24,12 @@ public final class GuiApi extends JavaPlugin {
     private final Listener moveListener = new MoveListener();
     private Map<UUID, Gui> guis = new HashMap<>();
 
-    /*public GuiApi(JavaPlugin plugin) {
+    public GuiApi(JavaPlugin plugin) {
         this.plugin = plugin;
         instance = this;
-    }*/
+    }
 
-    @Override
+    /*@Override
     public void onEnable() {
         // Plugin startup logic
         this.plugin = this;
@@ -41,7 +41,7 @@ public final class GuiApi extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-    }
+    }*/
 
     public void init() {
         //This method checks the server version, to determine weather it should use the new 1.20.2 teleport interpolation or my own teleport interpolation
@@ -67,7 +67,7 @@ public final class GuiApi extends JavaPlugin {
         getPlugin().getServer().getPluginManager().registerEvents(this.listener, this.plugin);
         getPlugin().getServer().getPluginManager().registerEvents(this.moveListener, this.plugin);
 
-        this.getPlugin().getCommand("spawnGui").setExecutor(new SpawnCommand());
+        //this.getPlugin().getCommand("spawnGui").setExecutor(new SpawnCommand());
     }
 
     public JavaPlugin getPlugin() {return this.plugin;}

@@ -136,6 +136,10 @@ public class Button implements Component {
         return slot;
     }
 
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
+
     public void setGui(Gui gui) {
         this.gui = gui;
     }
@@ -151,5 +155,13 @@ public class Button implements Component {
 
     public boolean isHover() {
         return hover;
+    }
+
+    public void setTexture(String texture) {
+        this.texture = texture;
+    }
+
+    public void setHoverTexture(String hoverTexture) {
+        this.hoverTexture = hoverTexture;
     }
 }

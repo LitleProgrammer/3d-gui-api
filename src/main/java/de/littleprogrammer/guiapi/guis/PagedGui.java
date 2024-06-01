@@ -19,7 +19,10 @@ public class PagedGui extends Gui {
     private List<String> contents;
     private List<Text> texts;
     private Button leftButton;
+    private Button middleButton;
     private Button rightButton;
+    private float contentSize = 1.3f;
+    private int contentSpacing = 60;
 
     public PagedGui(String title, int page) {
         super(UUID.randomUUID(), false);
@@ -27,6 +30,7 @@ public class PagedGui extends Gui {
         this.page = page;
         this.contents = new ArrayList<>();
         this.texts = new ArrayList<>();
+        this.title = title;
 
         setSpacing(60);
     }
@@ -42,9 +46,8 @@ public class PagedGui extends Gui {
         centerLocation = new Location(player.getWorld(), 0, 0, 0);
 
         for (int i = 0; i < 3; i++) {
-            System.out.println("Setting of: " + contents.get(i));
             if (contents.size() >= i) {
-                Text text = new Text(contents.get(i + page), i + 1).setSize(1f);
+                Text text = new Text(contents.get(i + page), i + 1).setSize(contentSize);
                 text.setGui(this);
                 texts.add(text);
                 components.put(text.getUniqueId(), text);
@@ -62,7 +65,7 @@ public class PagedGui extends Gui {
         leftButton.setGui(this);
         buttons.put(leftButton.getUniqueId(), leftButton);
 
-        rightButton = new Button(">", ">>", 2).onClick(event -> {
+        rightButton = new Button(">", ">>", 3).onClick(event -> {
             if (GuiApi.getInstance().getGuis().get(player.getUniqueId()) instanceof PagedGui) {
                 PagedGui gui = (PagedGui) GuiApi.getInstance().getGuis().get(player.getUniqueId());
                 System.out.println("Page " + gui.getPage() + " texts size " + contents.size() + " bool " + (gui.getPage() < contents.size() - 3));
@@ -103,28 +106,28 @@ public class PagedGui extends Gui {
 
             if (GuiApi.getInstance().getVersion().equals(ServerVersion.PRE_1_20_2)) {
                 for (Text text : texts) {
-                    Location newComponentLocation = Calculations.calculateComponentLocation(this, text, 3, spacing);
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, text, 3, contentSpacing);
 
                     TeleportInterpolator teleportInterpolator = new TeleportInterpolator(text.getEntity(), newComponentLocation, 5, 1);
                     teleportInterpolator.startInterpolation();
                 }
 
                 for (Button button : buttons.values()) {
-                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, 35);
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 3, spacing);
 
                     TeleportInterpolator teleportInterpolator = new TeleportInterpolator(button.getEntity(), newComponentLocation, 5, 1);
                     teleportInterpolator.startInterpolation();
                 }
             } else {
                 for (Text text : texts) {
-                    Location newComponentLocation = Calculations.calculateComponentLocation(this, text, 3, spacing);
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, text, 3, contentSpacing);
 
                     text.getDisplay().setTeleportDuration(5);
                     text.getDisplay().teleport(newComponentLocation);
                 }
 
                 for (Button button : buttons.values()) {
-                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, 35);
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 3, spacing);
 
                     button.getDisplay().setTeleportDuration(5);
                     button.getDisplay().teleport(newComponentLocation);
@@ -138,6 +141,17 @@ public class PagedGui extends Gui {
             texts.get(i).updateText(contents.get(i + newPage));
         }
         this.page = newPage;
+    }
+
+    public PagedGui addButton(Button button) {
+        if (middleButton == null) {
+            button.setSlot(2);
+            components.put(button.getUniqueId(), button);
+            buttons.put(button.getUniqueId(), button);
+            middleButton = button;
+            button.setGui(this);
+        }
+        return this;
     }
 
     public void setContents(List<String> contents) {
@@ -154,6 +168,10 @@ public class PagedGui extends Gui {
         this.contents.add(content);
     }
 
+    public List<String> getContents() {
+        return contents;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -162,7 +180,23 @@ public class PagedGui extends Gui {
         return page;
     }
 
-    public List<Text> getTexts() {
-        return texts;
+    public void setContentSize(float contentSize) {
+        this.contentSize = contentSize;
+    }
+
+    public void setContentSpacing(int contentSpacing) {
+        this.contentSpacing = contentSpacing;
+    }
+
+    public PagedGui setLeftButtonText(String text, String hoverText) {
+        leftButton.setTexture(text);
+        leftButton.setHoverTexture(hoverText);
+        return this;
+    }
+
+    public PagedGui setRightButtonText(String text, String hoverText) {
+        rightButton.setTexture(text);
+        rightButton.setHoverTexture(hoverText);
+        return this;
     }
 }

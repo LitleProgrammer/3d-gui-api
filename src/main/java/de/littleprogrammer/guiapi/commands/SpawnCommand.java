@@ -60,9 +60,16 @@ public class SpawnCommand implements CommandExecutor {
         stringList.add(ChatColor.DARK_BLUE.toString() + ChatColor.BOLD + "Stooooppp!!!\n" + ChatColor.RESET + ChatColor.WHITE + "Lorem ipsum dolor\n sit amet,\n consetetur sadipscing\n elitr, sed diam\n nonumy eirmod\n tempor invidunt ut\n labore et dolore\n magna aliquyam");
         stringList.add(ChatColor.DARK_GREEN.toString() + ChatColor.BOLD + "The end.\n" + ChatColor.RESET + ChatColor.WHITE + "Lorem ipsum dolor\n sit amet,\n consetetur sadipscing\n elitr, sed diam\n nonumy eirmod\n tempor invidunt ut\n labore et dolore\n magna aliquyam");
 
-        PagedGui pagedGui = new PagedGui("Title", 0);
+        Button button2 = new Button("close", "CLOSE", 1).onClick(event -> {
+            event.getPlayer().sendMessage("You clicked the close button!");
+        });
+
+        PagedGui pagedGui = new PagedGui("Title", 0).addButton(button2);
+        pagedGui.setSpacing(30);
+        pagedGui.setContentSpacing(50);
         pagedGui.addContent(stringList);
         pagedGui.open((Player) commandSender);
+        pagedGui.setLeftButtonText("left", "lll").setRightButtonText("right", "rrr");
 
         return false;
     }
