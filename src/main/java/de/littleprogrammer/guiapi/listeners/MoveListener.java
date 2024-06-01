@@ -1,7 +1,7 @@
 package de.littleprogrammer.guiapi.listeners;
 
 import de.littleprogrammer.guiapi.GuiApi;
-import de.littleprogrammer.guiapi.SimpleGui;
+import de.littleprogrammer.guiapi.guis.Gui;
 import de.littleprogrammer.guiapi.components.Button;
 import de.littleprogrammer.guiapi.components.Component;
 import de.littleprogrammer.guiapi.customeEvents.HoverButtonEvent;
@@ -20,13 +20,13 @@ public class MoveListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (GuiApi.getInstance().getGuis().containsKey(event.getPlayer().getUniqueId())) {
-            SimpleGui simpleGui = GuiApi.getInstance().getGuis().get(event.getPlayer().getUniqueId());
+            Gui gui = GuiApi.getInstance().getGuis().get(event.getPlayer().getUniqueId());
 
             if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getY() != event.getTo().getY() || event.getFrom().getZ() != event.getTo().getZ()) {
                 //Location is different
-                simpleGui.updatePosition(event.getPlayer().getEyeLocation());
-            } else if (!Calculations.isInRange(event.getPlayer().getEyeLocation(), simpleGui.getCenterLocation(), 40)) {
-                simpleGui.updatePosition(event.getPlayer().getEyeLocation());
+                gui.updatePosition(event.getPlayer().getEyeLocation());
+            } else if (!Calculations.isInRange(event.getPlayer().getEyeLocation(), gui.getCenterLocation(), gui.getSpacing() + 15)) {
+                gui.updatePosition(event.getPlayer().getEyeLocation());
             }
 
             Entity hoveredEntity = null;
@@ -40,17 +40,17 @@ public class MoveListener implements Listener {
             }
 
             if (hoveredEntity != null) {
-                if (simpleGui.getComponent(UUID.fromString(hoveredEntity.getCustomName())) instanceof Button) {
-                    Button button = (Button) simpleGui.getComponent(UUID.fromString(hoveredEntity.getCustomName()));
-                    button.getHoverAction().accept(new HoverButtonEvent(simpleGui, event.getPlayer(), button, button.getHoverText(), button.getText()));
+                if (gui.getComponent(UUID.fromString(hoveredEntity.getCustomName())) instanceof Button) {
+                    Button button = (Button) gui.getComponent(UUID.fromString(hoveredEntity.getCustomName()));
+                    button.getHoverAction().accept(new HoverButtonEvent(gui, event.getPlayer(), button, button.getHoverText(), button.getText()));
                     button.setHover(true);
                 }
             } else {
-                for (Component component : simpleGui.getComponents()) {
+                for (Component component : gui.getComponents()) {
                     if (component instanceof Button) {
                         Button button = (Button) component;
                         if (button.isHover()) {
-                            button.getUnHoverAction().accept(new UnHoverButtonEvent(simpleGui, event.getPlayer(), button, button.getHoverText(), button.getText()));
+                            button.getUnHoverAction().accept(new UnHoverButtonEvent(gui, event.getPlayer(), button, button.getHoverText(), button.getText()));
                             button.setHover(false);
                         }
                     }

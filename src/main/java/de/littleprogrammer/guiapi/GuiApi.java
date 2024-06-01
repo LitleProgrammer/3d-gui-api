@@ -2,9 +2,10 @@ package de.littleprogrammer.guiapi;
 
 import de.littleprogrammer.guiapi.commands.SpawnCommand;
 import de.littleprogrammer.guiapi.enums.ServerVersion;
+import de.littleprogrammer.guiapi.guis.Gui;
+import de.littleprogrammer.guiapi.guis.SimpleGui;
 import de.littleprogrammer.guiapi.listeners.GuiEvents;
 import de.littleprogrammer.guiapi.listeners.MoveListener;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,14 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class GuiApi {
+public final class GuiApi /*extends JavaPlugin*/ {
 
     private JavaPlugin plugin;
     private static GuiApi instance;
     private ServerVersion version;
     private final Listener listener = new GuiEvents();
     private final Listener moveListener = new MoveListener();
-    private Map<UUID, SimpleGui> guis = new HashMap<>();
+    private Map<UUID, Gui> guis = new HashMap<>();
 
     public GuiApi(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -78,15 +79,15 @@ public final class GuiApi {
         return GuiApi.getInstance().getPlugin().getServer().getScheduler();
     }
 
-    public SimpleGui getGUI(UUID uuid) {
+    public Gui getGUI(UUID uuid) {
         return guis.get(uuid);
     }
 
-    public SimpleGui getGUI(Player player) {
+    public Gui getGUI(Player player) {
         return guis.get(player.getUniqueId());
     }
 
-    public Map<UUID, SimpleGui> getGuis() {
+    public Map<UUID, Gui> getGuis() {
         return guis;
     }
 

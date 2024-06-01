@@ -1,6 +1,8 @@
 package de.littleprogrammer.guiapi.utils;
 
-import de.littleprogrammer.guiapi.SimpleGui;
+import de.littleprogrammer.guiapi.components.Text;
+import de.littleprogrammer.guiapi.guis.Gui;
+import de.littleprogrammer.guiapi.guis.SimpleGui;
 import de.littleprogrammer.guiapi.components.Button;
 import de.littleprogrammer.guiapi.components.Component;
 import org.bukkit.Location;
@@ -21,12 +23,12 @@ public class Calculations {
         return new Location(midLocation.getWorld(), x, y, z, midLocation.getYaw(), 0);
     }
 
-    public static Location calculateComponentLocation(SimpleGui simpleGui, Component component, int buttonAmount) {
-        Location centerLoc = simpleGui.getCenterLocation();
+    public static Location calculateComponentLocation(Gui gui, Component component, int buttonAmount, int spacing) {
+        Location centerLoc = gui.getCenterLocation();
         if (component instanceof Button) {
             Button button = (Button) component;
 
-            Location[] locations = calculateTrianglePoints(simpleGui.getPlayer().getLocation(), centerLoc);
+            Location[] locations = calculateTrianglePoints(gui.getPlayer().getLocation(), centerLoc, spacing);
             //Is button in row
             switch (buttonAmount) {
                 case 1:
@@ -48,6 +50,31 @@ public class Calculations {
                     }
                     break;
             }
+        } else if (component instanceof Text) {
+            Text text = (Text) component;
+
+            Location[] locations = calculateTrianglePoints(gui.getPlayer().getLocation(), centerLoc, spacing);
+            //Is button in row
+            switch (buttonAmount) {
+                case 1:
+                    return centerLoc.clone().add(0, 1.5, 0);
+                case 2:
+                    if (text.getSlot() == 1) {
+                        return locations[0].clone().add(0, 1.5, 0);
+                    } else if (text.getSlot() == 2) {
+                        return locations[1].add(0, 1.5, 0);
+                    }
+                    break;
+                case 3:
+                    if (text.getSlot() == 1) {
+                        return locations[0].add(0, 1.5, 0);
+                    } else if (text.getSlot() == 2) {
+                        return centerLoc.clone().add(0, 1.5, 0);
+                    } else if (text.getSlot() == 3) {
+                        return locations[1].add(0, 1.5, 0);
+                    }
+                    break;
+            }
         } else {
             //Is content
             return centerLoc.clone().add(0, 1.5, 0);
@@ -55,15 +82,16 @@ public class Calculations {
         return null;
     }
 
+
     /**
      * @param playerLocation the location of the player (the point in the middle)
      * @param centerLocation the location on the circle to get the correct height
      */
-    private static Location[] calculateTrianglePoints(Location playerLocation, Location centerLocation) {
+    private static Location[] calculateTrianglePoints(Location playerLocation, Location centerLocation, int spacing) {
         double radius = playerLocation.distance(centerLocation);
 
-        Vector vector1 = playerLocation.getDirection().setY(0).normalize().multiply(radius).rotateAroundY(Math.toRadians(30));
-        Vector vector2 = playerLocation.getDirection().setY(0).normalize().multiply(radius).rotateAroundY(Math.toRadians(-30));
+        Vector vector1 = playerLocation.getDirection().setY(0).normalize().multiply(radius).rotateAroundY(Math.toRadians(spacing));
+        Vector vector2 = playerLocation.getDirection().setY(0).normalize().multiply(radius).rotateAroundY(Math.toRadians(spacing * -1));
 
         Location loc1 = playerLocation.clone().add(vector1);
         loc1.setY(centerLocation.getY());
