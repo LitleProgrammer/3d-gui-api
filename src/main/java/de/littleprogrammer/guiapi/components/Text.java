@@ -100,4 +100,8 @@ public class Text implements Component {
     public void setSlot(int slot) {
         this.slot = slot;
     }
+
+    public void updateText(String newText) {
+        textDisplay.setText(newText);
+    }
 }

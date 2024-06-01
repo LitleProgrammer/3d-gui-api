@@ -57,21 +57,21 @@ public class Calculations {
             //Is button in row
             switch (buttonAmount) {
                 case 1:
-                    return centerLoc.clone().subtract(0, 0, 0);
+                    return centerLoc.clone().add(0, 1.5, 0);
                 case 2:
                     if (text.getSlot() == 1) {
-                        return locations[0];
+                        return locations[0].clone().add(0, 1.5, 0);
                     } else if (text.getSlot() == 2) {
-                        return locations[1];
+                        return locations[1].add(0, 1.5, 0);
                     }
                     break;
                 case 3:
                     if (text.getSlot() == 1) {
-                        return locations[0];
+                        return locations[0].add(0, 1.5, 0);
                     } else if (text.getSlot() == 2) {
-                        return centerLoc.clone().subtract(0, 0, 0);
+                        return centerLoc.clone().add(0, 1.5, 0);
                     } else if (text.getSlot() == 3) {
-                        return locations[1];
+                        return locations[1].add(0, 1.5, 0);
                     }
                     break;
             }

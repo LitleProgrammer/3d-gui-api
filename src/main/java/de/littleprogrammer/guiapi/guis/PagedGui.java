@@ -44,7 +44,7 @@ public class PagedGui extends Gui {
         for (int i = 0; i < 3; i++) {
             System.out.println("Setting of: " + contents.get(i));
             if (contents.size() >= i) {
-                Text text = new Text(contents.get(i + page), i + 1);
+                Text text = new Text(contents.get(i + page), i + 1).setSize(1f);
                 text.setGui(this);
                 texts.add(text);
                 components.put(text.getUniqueId(), text);
@@ -65,7 +65,8 @@ public class PagedGui extends Gui {
         rightButton = new Button(">", ">>", 2).onClick(event -> {
             if (GuiApi.getInstance().getGuis().get(player.getUniqueId()) instanceof PagedGui) {
                 PagedGui gui = (PagedGui) GuiApi.getInstance().getGuis().get(player.getUniqueId());
-                if (gui.getPage() < gui.getTexts().size() - 3) {
+                System.out.println("Page " + gui.getPage() + " texts size " + contents.size() + " bool " + (gui.getPage() < contents.size() - 3));
+                if (gui.getPage() < contents.size() - 3) {
                     gui.changePage(gui.getPage() + 1);
                 }
             }
@@ -109,7 +110,7 @@ public class PagedGui extends Gui {
                 }
 
                 for (Button button : buttons.values()) {
-                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, spacing);
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, 35);
 
                     TeleportInterpolator teleportInterpolator = new TeleportInterpolator(button.getEntity(), newComponentLocation, 5, 1);
                     teleportInterpolator.startInterpolation();
@@ -123,7 +124,7 @@ public class PagedGui extends Gui {
                 }
 
                 for (Button button : buttons.values()) {
-                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, spacing);
+                    Location newComponentLocation = Calculations.calculateComponentLocation(this, button, 2, 35);
 
                     button.getDisplay().setTeleportDuration(5);
                     button.getDisplay().teleport(newComponentLocation);
@@ -133,7 +134,10 @@ public class PagedGui extends Gui {
     }
 
     private void changePage(int newPage) {
-
+        for (int i = 0; i < 3; i++) {
+            texts.get(i).updateText(contents.get(i + newPage));
+        }
+        this.page = newPage;
     }
 
     public void setContents(List<String> contents) {

@@ -39,7 +39,6 @@ public class GuiEvents implements Listener {
         if (!(component instanceof Button)) return;
 
         Button button = (Button) component;
-        //System.out.println("Click on button: " + button.getUniqueId());
         button.getClickAction().accept(new PlayerInteractEntityEvent(event.getPlayer(), button.getEntity()));
     }
 }
