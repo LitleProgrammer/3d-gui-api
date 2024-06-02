@@ -46,7 +46,7 @@ public class PagedGui extends Gui {
         centerLocation = new Location(player.getWorld(), 0, 0, 0);
 
         for (int i = 0; i < 3; i++) {
-            if (contents.size() >= i) {
+            if (contents.size() > i) {
                 Text text = new Text(contents.get(i + page), i + 1).setSize(contentSize);
                 text.setGui(this);
                 texts.add(text);
