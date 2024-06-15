@@ -49,7 +49,23 @@ public final class GuiApi /*extends JavaPlugin*/ {
         String preTrdIndicator = plugin.getServer().getBukkitVersion().split("\\.")[2];
         String trdIndicator = preTrdIndicator.split("-")[0];
 
+        //If version is like 1.21 it threw an error
+        try {
+            Integer.parseInt(secIndicator);
+        } catch (NumberFormatException e) {
+            secIndicator = secIndicator.split("-")[0];
+        }
+
+        //If version is like 1.21 there is no .0 in the input string, but it needs to be for the following method
+        try {
+            Integer.parseInt(preTrdIndicator);
+        } catch (NumberFormatException e) {
+            trdIndicator = "0";
+        }
+
+        //1.20.x
         if (Integer.parseInt(secIndicator) == 20) {
+            //1.20.2
             if (Integer.parseInt(trdIndicator) >= 2) {
                 version = ServerVersion.POST_1_20_2;
             } else {
